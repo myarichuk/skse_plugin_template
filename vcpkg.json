@@ -1,8 +1,61 @@
 {
-    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-    "dependencies": [
-      "commonlibsse-ng",
-      "boost",
-      "catch2"
-    ]
+  "name": "skse-plugin-template",
+  "version-string": "0.1.0",
+  "port-version": 0,
+  "description": "An SKSE plugin template based on CommonLibSSE-NG",
+
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "license": "Apache-2.0",
+  "features": {
+    "scripts": {
+      "description": "Install Papyrus sources for this program to develop on top of it."
+    },
+    "scripts-dev": {
+      "description": "Install Papyrus sources necessary to develop scripts for this plugin.",
+      "dependencies": [
+        "bethesda-skyrim-scripts",
+        {
+          "name": "skse",
+          "default-features": false,
+          "features": [
+            "scripts"
+          ]
+        }
+      ]
+    },
+    "plugin": {
+      "description": "Build the SKSE plugin.",
+      "dependencies": [
+        "commonlibsse-ng"
+      ]
+    },
+    "tests": {
+      "description": "Build tests for the SKSE plugin.",
+      "dependencies": [
+        {
+          "name": "skse-plugin-template",
+          "default-features": false,
+          "features": [
+            "plugin"
+          ]
+        },
+        "catch2"
+      ]
+    }
+  },
+  "default-features": [
+    "scripts-dev",
+    "plugin",
+    "tests"
+  ],
+
+  "dependencies": [
+    "commonlibsse-ng",
+    "boost",
+    "catch2",
+    "skse",
+    "script-extender-common",
+    "bethesda-skyrim-scripts",
+    "gluino"
+  ]
 }
