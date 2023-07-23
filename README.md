@@ -1,0 +1,1 @@
+# skse_plugin_template
