@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/skse_plugin_template/FileContentIndex
+/.vs/skse_plugin_template/v17/ipch/AutoPCH/17b5d0f3b80870ec
+/.vs/skse_plugin_template/v17
+/.vs
+/out/build/x64-debug
