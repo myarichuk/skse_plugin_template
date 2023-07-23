@@ -4,12 +4,12 @@
 #include <typeindex>
 #include <any>
 
-class EventAggregator
+class event_aggregator
 {
 public:
-    static EventAggregator& Instance()
+    static event_aggregator& Instance()
     {
-        static EventAggregator instance;
+        static event_aggregator instance;
         return instance;
     }
 
@@ -53,9 +53,9 @@ public:
 
 
 private:
-    EventAggregator() = default;
-    EventAggregator(const EventAggregator&) = delete;
-    EventAggregator& operator=(const EventAggregator&) = delete;
+    event_aggregator() = default;
+    event_aggregator(const event_aggregator&) = delete;
+    event_aggregator& operator=(const event_aggregator&) = delete;
 
     std::unordered_map<std::type_index, std::any> signals_;
 };

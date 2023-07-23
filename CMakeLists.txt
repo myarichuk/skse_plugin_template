@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 include(GNUInstallDirs)
-
+ 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
@@ -99,6 +99,10 @@ target_include_directories(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+
+
+install(TARGETS ${PROJECT_NAME}
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
 message("Options:")
 if(CMAKE_BUILD_TYPE MATCHES Debug)

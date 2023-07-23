@@ -8,23 +8,23 @@ using namespace spdlog;
 namespace logger = SKSE::log;
 
 inline void SetupLog() {
-    const auto logsFolder = SKSE::log::log_directory();
+    const auto logs_folder = SKSE::log::log_directory();
 
-    if (!logsFolder) 
+    if (!logs_folder) 
         SKSE::stl::report_and_fail("SKSE log_directory not provided, logs disabled.");
 
-    auto pluginName = SKSE::PluginDeclaration::GetSingleton()->GetName();
-    const auto logFilePath = *logsFolder / std::format("{}.log", pluginName);
-    auto fileLoggerPtr = std::make_shared<sinks::basic_file_sink_mt>(logFilePath.string(), true);
+    auto plugin_name = SKSE::PluginDeclaration::GetSingleton()->GetName();
+    const auto log_file_path = *logs_folder / std::format("{}.log", plugin_name);
+    auto file_logger_ptr = std::make_shared<sinks::basic_file_sink_mt>(log_file_path.string(), true);
     std::shared_ptr<spdlog::logger> loggerPtr;
 
     if (IsDebuggerPresent()) {
-        auto debugLoggerPtr = std::make_shared<sinks::msvc_sink_mt>();
-        sinks_init_list loggers{std::move(fileLoggerPtr), std::move(debugLoggerPtr)};
+        auto debug_logger_ptr = std::make_shared<sinks::msvc_sink_mt>();
+        sinks_init_list loggers{std::move(file_logger_ptr), std::move(debug_logger_ptr)};
         loggerPtr = std::make_shared<spdlog::logger>("log", loggers);
     } else {
         // If no debugger is attached, only log to the file.
-        loggerPtr = std::make_shared<spdlog::logger>("log", std::move(fileLoggerPtr));
+        loggerPtr = std::make_shared<spdlog::logger>("log", std::move(file_logger_ptr));
     }
     set_default_logger(std::move(loggerPtr));
 

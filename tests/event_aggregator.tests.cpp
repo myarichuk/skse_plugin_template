@@ -1,4 +1,4 @@
-#include "../include/EventAggregator.hpp"
+#include "../include/event_aggregator.hpp"
 #include <string>
 #include <catch.hpp>
 
@@ -14,7 +14,7 @@ public:
 };
 
 TEST_CASE("EventAggregator Tests", "[event]") {
-    EventAggregator& ea = EventAggregator::Instance();
+    event_aggregator& ea = event_aggregator::Instance();
 
     SECTION("Multiple subscribers, one disconnects") {
         int received1 = 0;
