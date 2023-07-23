@@ -7,3 +7,4 @@
 /.vs/skse_plugin_template/v17
 /.vs
 /out/build/x64-debug
+/build/debug
