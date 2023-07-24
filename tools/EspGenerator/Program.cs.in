@@ -1,0 +1,10 @@
+﻿using System.IO.Abstractions;
+using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Plugins.Binary.Parameters;
+using Mutagen.Bethesda.Skyrim;
+
+var mod = new SkyrimMod(ModKey.FromFileName("@PROJECT_NAME@.esp"), SkyrimRelease.SkyrimSE);
+mod.WriteToBinary("./@PROJECT_NAME@.esp", fileSystem: new FileSystem(), param: new BinaryWriteParameters()
+{
+    ModKey = ModKeyOption.NoCheck
+});

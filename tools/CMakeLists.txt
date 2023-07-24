@@ -24,9 +24,9 @@ endif()
 
 # This will replace @PROJECT_NAME@ in template.json.in with the actual project name,
 # and generate template.json in the source folder of your tool
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/template.json.in ${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/SynthesisMeta.json @ONLY)
-
-
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/Program.cs.in ${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/Program.cs @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/SynthesisMeta.json.in ${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/SynthesisMeta.json @ONLY)
+ 
 message("Building the empty ESP generator")
 # Now compile your .NET tool (make sure to adjust paths and names)
 execute_process(COMMAND ${DOTNET} publish ${CMAKE_CURRENT_SOURCE_DIR}/EspGenerator/EspGenerator.csproj -o ${CMAKE_CURRENT_SOURCE_DIR}/ --self-contained true /p:PublishSingleFile=true -r win-x64
@@ -34,5 +34,5 @@ execute_process(COMMAND ${DOTNET} publish ${CMAKE_CURRENT_SOURCE_DIR}/EspGenerat
                                OUTPUT_VARIABLE output
                                ERROR_VARIABLE error)
 if(result)
-    message(FATAL_ERROR \"Publishing .NET tool failed: ${error}\")
+    message(FATAL_ERROR \"Compiling .NET tool failed: ${error}\")
 endif()

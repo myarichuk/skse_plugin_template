@@ -1,7 +1,9 @@
-﻿# CMakeList.txt : CMake project for skse_plugin_template, include source and define
-# project specific logic here.
-#
-cmake_minimum_required(VERSION 3.21)
+﻿cmake_minimum_required(VERSION 3.21)
+
+# Sanity check
+if(NOT WIN32)
+    message(FATAL_ERROR "We can build this project only on Windows, sorry! :(")
+endif()
 
 # Check if CMAKE_TOOLCHAIN_FILE is set
 if(DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -78,7 +80,7 @@ if(NOT EXISTS ${VCPKG_EXECUTABLE})
         message(FATAL_ERROR "Bootstrap failed")
     endif()
 endif()
-
+ 
 # Set up and configure compilation
 file(GLOB_RECURSE source_files src/*.cpp include/*.h include/*.hpp)
 
