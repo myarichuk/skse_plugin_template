@@ -9,3 +9,6 @@
 /out/build/x64-debug
 /build/debug
 /build
+/tools/EspGenerator/.vs/
+/tools/EspGenerator/bin/
+/tools/EspGenerator/obj

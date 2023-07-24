@@ -18,7 +18,7 @@ configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
         @ONLY)
- 
+
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
@@ -65,6 +65,53 @@ if(NOT EXISTS ${VCPKG_EXECUTABLE})
         message(FATAL_ERROR "Bootstrap failed")
     endif()
 endif()
+ 
+#Set up and configure building of tools
+# Locate the dotnet CLI tool
+find_program(DOTNET dotnet)
+if(NOT DOTNET)
+    message(FATAL_ERROR "The dotnet CLI tool is not found. Please install it to proceed.")
+endif()
+
+# Check the version of .NET
+execute_process(COMMAND ${DOTNET} --version
+                OUTPUT_VARIABLE DOTNET_VERSION
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# parse the version into major, minor and patch
+string(REGEX MATCH "([0-9]+)\\.([0-9]+)\\.([0-9]+)" DOTNET_VERSION ${DOTNET_VERSION})
+
+set(DOTNET_VERSION_MAJOR ${CMAKE_MATCH_1})
+set(DOTNET_VERSION_MINOR ${CMAKE_MATCH_2})
+set(DOTNET_VERSION_PATCH ${CMAKE_MATCH_3})
+
+# check if the version is at least 7.0.0
+if(DOTNET_VERSION_MAJOR LESS 7)
+    message(FATAL_ERROR "The dotnet version must be at least 7.0.0")
+endif()
+
+message("Building the empty ESP generator")
+# Now compile your .NET tool (make sure to adjust paths and names)
+# In this case, the .NET tool is in the same repo and can be built using 'dotnet build'
+execute_process(COMMAND ${DOTNET} build ${CMAKE_CURRENT_SOURCE_DIR}/tools/EspGenerator/EspGenerator.csproj
+                RESULT_VARIABLE result
+                OUTPUT_VARIABLE output
+                ERROR_VARIABLE error)
+  
+if(result)
+    message(FATAL_ERROR "Building .NET tool failed: ${error}")
+endif()
+
+# Add the .NET tool to the install phase to generate the empty ESP
+# We publish the .NET tool to /tools with everything required to run it standalone
+install(CODE "execute_process(COMMAND ${DOTNET} publish ${CMAKE_CURRENT_SOURCE_DIR}/tools/EspGenerator/EspGenerator.csproj -o ${CMAKE_CURRENT_SOURCE_DIR}/tools --self-contained true -r win-x64
+                               RESULT_VARIABLE result
+                               OUTPUT_VARIABLE output
+                               ERROR_VARIABLE error)
+             if(result)
+                 message(FATAL_ERROR \"Publishing .NET tool failed: ${error}\")
+             endif()")
+
 
 # Set up and configure compilation
 file(GLOB_RECURSE source_files src/*.cpp include/*.h include/*.hpp)
@@ -76,7 +123,7 @@ set(PUBLIC_HEADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}")
 set(headers)
 
 file(GLOB_RECURSE sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
-
+ 
 source_group(
         TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
