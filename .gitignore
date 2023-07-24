@@ -12,3 +12,7 @@
 /tools/EspGenerator/.vs/
 /tools/EspGenerator/bin/
 /tools/EspGenerator/obj
+/tools/*.exe
+/tools/*.pdb
+/install/
+/tools/e_sqlite3.dll

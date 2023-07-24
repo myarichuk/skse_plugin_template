@@ -1,0 +1,8 @@
+{
+  "Nickname": "skse_plugin_template",
+  "Visibility": "Visible",
+  "OneLineDescription": "",
+  "LongDescription": "",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": []
+}
